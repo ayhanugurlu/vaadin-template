@@ -1,6 +1,5 @@
 package com.au.example.vaadintemplate.view;
 
-import com.vaadin.demo.dashboard.DashboardNavigator;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;

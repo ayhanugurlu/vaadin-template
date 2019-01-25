@@ -3,17 +3,19 @@ package com.au.example.vaadintemplate.ui;
 
 import java.util.Locale;
 
+import com.au.example.vaadintemplate.data.DataProvider;
+import com.au.example.vaadintemplate.data.DummyProvider;
 import com.au.example.vaadintemplate.domain.User;
 import com.au.example.vaadintemplate.event.DashboardEvent;
 import com.au.example.vaadintemplate.event.DashboardEventBus;
 import com.au.example.vaadintemplate.view.LoginView;
+import com.au.example.vaadintemplate.view.MainView;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 
 
-import com.vaadin.data.provider.DataProvider;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
@@ -26,14 +28,14 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("dashboard")
-@Widgetset("com.vaadin.demo.dashboard.DashboardWidgetSet")
+
 @Title("QuickTickets Dashboard")
 @SpringUI(path = "/*")
 @SuppressWarnings("serial")
 public final class DashboardUI extends UI {
 
 
-
+    static DataProvider dataProvider = new DummyProvider();
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
 
     @Override
@@ -79,8 +81,9 @@ public final class DashboardUI extends UI {
 
     @Subscribe
     public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
-        User user = getDataProvider().authenticate(event.getUserName(),
-                event.getPassword());
+        User user = new User();
+        user.setFirstName("ayhan");
+        user.setRole("admin");
         VaadinSession.getCurrent().setAttribute(User.class.getName(), user);
         updateContent();
     }
@@ -107,7 +110,8 @@ public final class DashboardUI extends UI {
     public static DataProvider getDataProvider() {
 
 
-        return ((DashboardUI) getCurrent()).dataProvider;
+       // return ((DashboardUI) getCurrent()).dataProvider;
+        return dataProvider;
     }
 
     public static DashboardEventBus getDashboardEventbus() {

@@ -6,15 +6,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.vaadin.addon.charts.Chart;
-import com.vaadin.addon.charts.model.DataSeries;
-import com.vaadin.addon.charts.model.DataSeriesItem;
-import com.vaadin.addon.charts.model.HorizontalAlign;
-import com.vaadin.addon.charts.model.Legend;
-import com.vaadin.addon.charts.model.VerticalAlign;
-import com.vaadin.demo.dashboard.DashboardUI;
-import com.vaadin.demo.dashboard.domain.Movie;
-import com.vaadin.demo.dashboard.domain.MovieRevenue;
+import com.au.example.vaadintemplate.domain.Movie;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
@@ -34,7 +27,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class SalesView extends VerticalLayout implements View {
 
-    private final Chart timeline;
+
     private ComboBox<Movie> movieSelect;
     private Collection<Movie> movies;
 
@@ -46,22 +39,13 @@ public class SalesView extends VerticalLayout implements View {
 
         addComponent(buildHeader());
 
-        timeline = buildTimeline();
-        addComponent(timeline);
-        setExpandRatio(timeline, 1);
 
         initMovieSelect();
-        // Add first 4 by default
-        List<Movie> subList = new ArrayList<Movie>(
-                DashboardUI.getDataProvider().getMovies()).subList(0, 4);
-        for (Movie m : subList) {
-            addDataSet(m);
-        }
+
     }
 
     private void initMovieSelect() {
-        movies = new HashSet<>(DashboardUI.getDataProvider().getMovies());
-        movieSelect.setItems(movies);
+
     }
 
     private Component buildHeader() {
@@ -89,7 +73,7 @@ public class SalesView extends VerticalLayout implements View {
                     @Override
                     public void handleAction(final Object sender,
                                              final Object target) {
-                        addDataSet(movieSelect.getValue());
+
                     }
                 });
 
@@ -109,8 +93,7 @@ public class SalesView extends VerticalLayout implements View {
         clear.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
-                timeline.getConfiguration().setSeries(new ArrayList<>());
-                timeline.drawChart();
+
                 initMovieSelect();
                 clear.setEnabled(false);
             }
@@ -120,7 +103,6 @@ public class SalesView extends VerticalLayout implements View {
         add.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
-                addDataSet(movieSelect.getValue());
                 clear.setEnabled(true);
             }
         });
@@ -128,40 +110,7 @@ public class SalesView extends VerticalLayout implements View {
         return toolbar;
     }
 
-    private Chart buildTimeline() {
-        Chart result = new Chart();
-        result.setSizeFull();
 
-        result.setTimeline(true);
-
-        result.getConfiguration().getRangeSelector().setEnabled(false);
-
-        Legend legend = result.getConfiguration().getLegend();
-        legend.setAlign(HorizontalAlign.RIGHT);
-        legend.setVerticalAlign(VerticalAlign.TOP);
-        legend.setEnabled(true);
-        return result;
-    }
-
-    private void addDataSet(final Movie movie) {
-        movies.remove(movie);
-        movieSelect.setValue(null);
-        movieSelect.getDataProvider().refreshAll();
-
-        Collection<MovieRevenue> revenues = DashboardUI.getDataProvider()
-                .getDailyRevenuesByMovie(movie.getId());
-
-        DataSeries movieSeries = new DataSeries();
-        for (MovieRevenue revenue : revenues) {
-            DataSeriesItem item = new DataSeriesItem();
-            item.setX(revenue.getTimestamp());
-            item.setY(revenue.getRevenue());
-            movieSeries.add(item);
-        }
-        movieSeries.setName(movie.getTitle());
-        timeline.getConfiguration().addSeries(movieSeries);
-        timeline.drawChart();
-    }
 
     @Override
     public void enter(final ViewChangeEvent event) {

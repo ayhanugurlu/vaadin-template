@@ -4,11 +4,7 @@ package com.au.example.vaadintemplate.view.transactions;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.au.example.vaadintemplate.domain.Transaction;
@@ -101,16 +97,22 @@ public final class TransactionsView extends VerticalLayout implements View {
         // TODO use new filtering API
         filter.addValueChangeListener(event -> {
 
-            Collection<Transaction> transactions = DashboardUI.getDataProvider()
-                    .getRecentTransactions(200).stream().filter(transaction -> {
+
+            Transaction t= new Transaction();
+            t.setCity("1");
+            List<Transaction> transactions1 = new ArrayList<>();
+
+            ListDataProvider<Transaction> dataProvider = new ListDataProvider<Transaction>(transactions1);
+
+
+            Collection<Transaction> transactions =transactions1.stream().filter(transaction -> {
                         filterValue = filter.getValue().trim().toLowerCase();
                         return passesFilter(transaction.getCountry())
                                 || passesFilter(transaction.getTitle())
                                 || passesFilter(transaction.getCity());
                     }).collect(Collectors.toList());
 
-            ListDataProvider<Transaction> dataProvider = com.vaadin.data.provider.DataProvider
-                    .ofCollection(transactions);
+
             dataProvider.addSortComparator(Comparator
                     .comparing(Transaction::getTime).reversed()::compare);
             grid.setDataProvider(dataProvider);
@@ -158,9 +160,12 @@ public final class TransactionsView extends VerticalLayout implements View {
 
         grid.setColumnReorderingAllowed(true);
 
-        ListDataProvider<Transaction> dataProvider = com.vaadin.data.provider.DataProvider
-                .ofCollection(DashboardUI.getDataProvider()
-                        .getRecentTransactions(200));
+
+        Transaction t= new Transaction();
+        t.setCity("1");
+        List<Transaction> transactions = new ArrayList<>();
+
+        ListDataProvider<Transaction> dataProvider = new ListDataProvider<Transaction>(transactions);
         dataProvider.addSortComparator(
                 Comparator.comparing(Transaction::getTime).reversed()::compare);
         grid.setDataProvider(dataProvider);

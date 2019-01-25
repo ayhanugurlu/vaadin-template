@@ -3,9 +3,8 @@ package com.au.example.vaadintemplate.event;
 
 import java.util.Collection;
 
+import com.au.example.vaadintemplate.domain.Transaction;
 import com.au.example.vaadintemplate.view.DashboardViewType;
-import com.vaadin.demo.dashboard.domain.Transaction;
-import com.vaadin.demo.dashboard.view.DashboardViewType;
 
 /*
  * Event bus events used in Dashboard are listed here as inner classes.

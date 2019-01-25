@@ -1,10 +1,11 @@
 package com.au.example.vaadintemplate.event;
 
 
+import com.au.example.vaadintemplate.ui.DashboardUI;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
-import com.vaadin.demo.dashboard.DashboardUI;
+
 /**
  * Created by Ayhan.Ugurlu on 25/01/2019
  */
